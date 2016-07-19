@@ -203,13 +203,15 @@ describe "The return keyword" do
     # jruby/jruby#3143
     describe "downstream from a lambda" do
       it "returns to its own return-capturing lexical enclosure" do
-        def a
-          ->{ yield }.call
-          return 2
-        end
-        def b
-          a { return 1 }
-        end
+        evaluate <<-ruby do
+          def a
+            ->{ yield }.call
+            return 2
+          end
+          def b
+            a { return 1 }
+          end
+        ruby
 
         b.should == 1
       end
